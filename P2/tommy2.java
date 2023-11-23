@@ -1,3 +1,5 @@
+package P2;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,9 +15,6 @@ public class Tamagotchi {
 
     private JLabel hungerLabel;
     private JLabel happinessLabel;
-    private JButton feedButton;
-    private JButton playButton;
-    private JButton sleepButton;
     private JPanel spritePanel; // Panel to display the sprite image
     private JLabel spriteLabel; // Label to hold the sprite image
 
@@ -30,15 +29,17 @@ public class Tamagotchi {
         JPanel panel = new JPanel();
         hungerLabel = new JLabel(name + "'s hunger: " + hunger);
         happinessLabel = new JLabel(name + "'s happiness: " + happiness);
-        feedButton = new JButton("Feed");
-        playButton = new JButton("Play");
-        sleepButton = new JButton("Sleep");
         spritePanel = new JPanel(); // Panel to display the sprite image
 
         // Set the layout manager for the main panel
         panel.setLayout(new BorderLayout());
 
-        // Add action listeners to the buttons
+        // Create image buttons
+        JButton feedButton = new JButton(new ImageIcon("path/to/feed_image.png"));
+        JButton playButton = new JButton(new ImageIcon("path/to/play_image.png"));
+        JButton sleepButton = new JButton(new ImageIcon("path/to/sleep_image.png"));
+
+        // Add action listeners to the image buttons
         feedButton.addActionListener(e -> feed());
         playButton.addActionListener(e -> play());
         sleepButton.addActionListener(e -> sleep());
@@ -107,7 +108,7 @@ public class Tamagotchi {
 
     private void displaySprite() {
         try {
-            BufferedImage spriteImage = ImageIO.read(new File("img/icon2.png"));
+            BufferedImage spriteImage = ImageIO.read(new File("path/to/sprite_image.png"));
             spriteLabel = new JLabel(new ImageIcon(spriteImage));
             spritePanel.removeAll(); // Clear the existing components in the sprite panel
             spritePanel.add(spriteLabel); // Add the sprite label to the sprite panel
