@@ -1,9 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.util.Random;
 
 public class Tamagotchi {
     private String name;
@@ -39,9 +42,21 @@ public class Tamagotchi {
         panel.setLayout(new BorderLayout());
 
         // Add action listeners to the buttons
-        feedButton.addActionListener(e -> feed());
-        playButton.addActionListener(e -> play());
-        sleepButton.addActionListener(e -> sleep());
+        feedButton.addActionListener(e -> {
+            if (askArithmeticQuestion()) {
+                feed();
+            }
+        });
+        playButton.addActionListener(e -> {
+            if (askArithmeticQuestion()) {
+                play();
+            }
+        });
+        sleepButton.addActionListener(e -> {
+            if (askArithmeticQuestion()) {
+                sleep();
+            }
+        });
 
         // Add the components to the panel
         panel.add(hungerLabel, BorderLayout.NORTH);
@@ -58,6 +73,37 @@ public class Tamagotchi {
         frame.setVisible(true);
 
         displaySprite(); // Display the sprite image
+    }
+
+    private boolean askArithmeticQuestion() {
+        Random random = new Random();
+        int num1 = random.nextInt(10);
+        int num2 = random.nextInt(10);
+        int result;
+
+        // Generate a random addition or subtraction problem
+        if (random.nextBoolean()) {
+            result = num1 + num2;
+            return askQuestion("What is " + num1 + " + " + num2 + "?", result);
+        } else {
+            result = num1 - num2;
+            return askQuestion("What is " + num1 + " - " + num2 + "?", result);
+        }
+    }
+
+    private boolean askQuestion(String question, int correctAnswer) {
+        String userAnswer = JOptionPane.showInputDialog(question);
+        if (userAnswer == null) {
+            return false;  // User canceled the input dialog
+        }
+
+        try {
+            int answer = Integer.parseInt(userAnswer);
+            return answer == correctAnswer;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number.");
+            return false;
+        }
     }
 
     public void feed() {
