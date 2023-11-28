@@ -7,6 +7,6 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 
 - [ ] Add Darkmode (Joseph)
 - [ ] Make the UI Cleaner / Sleeker (Joseph)
-- [ ] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
+- [x] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
 - [ ] Add Math Function (Emir)
 - [ ] Add Lore (Nick)
