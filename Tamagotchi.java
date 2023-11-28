@@ -107,7 +107,7 @@ public class Tamagotchi {
 
     private void displaySprite() {
         try {
-            BufferedImage spriteImage = ImageIO.read(new File("img/icon2.png"));
+            BufferedImage spriteImage = ImageIO.read(new File("img/icon3.png"));
             spriteLabel = new JLabel(new ImageIcon(spriteImage));
             spritePanel.removeAll(); // Clear the existing components in the sprite panel
             spritePanel.add(spriteLabel); // Add the sprite label to the sprite panel
