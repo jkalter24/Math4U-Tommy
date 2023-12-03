@@ -110,7 +110,7 @@ public class Tamagotchi {
         displaySprite();
 
         // Start the timer for periodic updates
-        timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(10000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updatePetStatus();
             }

@@ -10,5 +10,3 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 - [x] Add Math Function (Emir)
 - [ ] Add Incorrect / Error handling for math (Mason / Emir)
 - [ ] Add Lore (Nick)
- ### Important QOL Features To-Do
-- [ ] make it so that if you try to overfeed a tamagotchi It will become unhappy and go down a number (Joseph)
