@@ -82,7 +82,7 @@ public class Tamagotchi {
                 sleep();
             }
         });
-
+// creation of the dark mode button and its function
         JToggleButton darkModeSwitch = new JToggleButton("Dark Mode");
         darkModeSwitch.setPreferredSize(new Dimension(80, 100));
 
