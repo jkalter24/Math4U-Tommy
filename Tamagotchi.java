@@ -25,6 +25,7 @@ public class Tamagotchi {
     private JFrame frame;
     private Timer timer;
 
+    // intro the Tamogotchi Class and sets stats to 0 by default
     public Tamagotchi(String name) {
         this.name = name;
         this.hunger = 0;
