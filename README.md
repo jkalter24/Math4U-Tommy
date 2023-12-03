@@ -4,13 +4,12 @@
 Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our functioning program with the GUI and Sprite working.
 
 # Main Roadmap
-
 - [x] Add Darkmode (Joseph)
 - [x] Make the UI Cleaner / Sleeker (Joseph)
 - [x] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
 - [x] Add Math Function (Emir)
 - [ ] Add Incorrect / Error handling for math (Mason / Emir)
 - [ ] Add Lore (Nick)
-## Important QOL Features To-Do
-- [] make it so that if you try to overfeed a tamagotchi It will become unhappy and go down a number (Joseph)
-- [] limit happiniess and hunger to 4 on the following program (Joseph)
+ ### Important QOL Features To-Do
+- [ ] make it so that if you try to overfeed a tamagotchi It will become unhappy and go down a number (Joseph)
+- [ ] limit happiniess and hunger to 4 on the following program (Joseph)
