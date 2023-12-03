@@ -32,7 +32,7 @@ public class Tamagotchi {
         this.happiness = 0;
         this.tiredness = 0;
         this.isAlive = true;
-        this.isDarkMode = false;
+        this.isDarkMode = false; // Dark mode toggle set to false by default
 
         frame = new JFrame("Tamagotchi");
         JPanel panel = new JPanel(new BorderLayout());
