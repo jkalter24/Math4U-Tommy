@@ -115,7 +115,7 @@ public class Tamagotchi {
             updateLabels();
             checkStatus();
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
 
@@ -127,7 +127,7 @@ public class Tamagotchi {
             updateLabels();
             checkStatus();
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
 
@@ -139,14 +139,14 @@ public class Tamagotchi {
             updateLabels();
             checkStatus();
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
 
     private void checkStatus() {
         if (hunger > 5 || happiness < -5 || tiredness < -5) {
             isAlive = false;
-            JOptionPane.showMessageDialog(null, name + " has passed away. Game over.");
+            JOptionPane.showMessageDialog(null, name + " has passed away. Game over💀.");
         }
     }
 
