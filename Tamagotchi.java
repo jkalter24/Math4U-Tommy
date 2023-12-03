@@ -3,164 +3,277 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.util.Random;
 
 public class Tamagotchi {
     private String name;
     private int hunger;
     private int happiness;
+    private int tiredness;
     private boolean isAlive;
+    private boolean isDarkMode;
 
-    private JLabel hungerLabel;
-    private JLabel happinessLabel;
-    private JButton feedButton;
-    private JButton playButton;
-    private JButton sleepButton;
-    private JPanel spritePanel; // Panel to display the sprite image
-    private JLabel spriteLabel; // Label to hold the sprite image
+    private JProgressBar hungerProgressBar;
+    private JProgressBar happinessProgressBar;
+    private JProgressBar tirednessProgressBar;
 
+    private JPanel spritePanel;
+    private JLabel spriteLabel;
+    private JPanel buttonPanel;
+
+    private JFrame frame;
+    private Timer timer;
+
+    // intro the Tamogotchi Class and sets stats to 0 by default
     public Tamagotchi(String name) {
         this.name = name;
         this.hunger = 0;
         this.happiness = 0;
+        this.tiredness = 0;
         this.isAlive = true;
+        this.isDarkMode = false; // Dark mode toggle set to false by default
 
-        // Create the GUI components
-        JFrame frame = new JFrame("Tamagotchi");
-        JPanel panel = new JPanel();
-        hungerLabel = new JLabel(name + "'s hunger: " + hunger);
-        happinessLabel = new JLabel(name + "'s happiness: " + happiness);
-        feedButton = new JButton("Feed");
-        playButton = new JButton("Play");
-        sleepButton = new JButton("Sleep");
-        spritePanel = new JPanel(); // Panel to display the sprite image
+        frame = new JFrame("Tamagotchi");
+        JPanel panel = new JPanel(new BorderLayout());
+        hungerProgressBar = new JProgressBar(0, 4);
+        happinessProgressBar = new JProgressBar(0, 4);
+        tirednessProgressBar = new JProgressBar(-4, 4);
 
-        // Set the layout manager for the main panel
-        panel.setLayout(new BorderLayout());
+        hungerProgressBar.setString(name + "'s hunger: " + hunger);
+        happinessProgressBar.setString(name + "'s happiness: " + happiness);
+        tirednessProgressBar.setString(name + "'s tiredness: " + tiredness);
 
-        // Add action listeners to the buttons
-        feedButton.addActionListener(e -> {
-            if (askArithmeticQuestion()) {
+        // Add labels for the status bars
+        JLabel hungerLabel = new JLabel("Hunger:");
+        JLabel happinessLabel = new JLabel("Happiness:");
+        JLabel tirednessLabel = new JLabel("Tiredness:");
+
+        // Create a panel to hold the labels and progress bars
+        JPanel statusPanel = new JPanel(new GridLayout(3, 2));
+        statusPanel.add(hungerLabel);
+        statusPanel.add(hungerProgressBar);
+        statusPanel.add(happinessLabel);
+        statusPanel.add(happinessProgressBar);
+        statusPanel.add(tirednessLabel);
+        statusPanel.add(tirednessProgressBar);
+
+        ImageIcon feedIcon = new ImageIcon("img/feed.png");
+        ImageIcon playIcon = new ImageIcon("img/play.png");
+        ImageIcon sleepIcon = new ImageIcon("img/sleep.png");
+
+        JButton feedButton = new JButton(feedIcon);
+        JButton playButton = new JButton(playIcon);
+        JButton sleepButton = new JButton(sleepIcon);
+
+        feedButton.setBorderPainted(false);
+        feedButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
+        playButton.setContentAreaFilled(false);
+        sleepButton.setBorderPainted(false);
+        sleepButton.setContentAreaFilled(false);
+
+        spritePanel = new JPanel();
+        buttonPanel = new JPanel();
+
+        buttonPanel.add(feedButton);
+        buttonPanel.add(playButton);
+        buttonPanel.add(sleepButton);
+        buttonPanel.add(statusPanel); // Add the status panel to the button panel
+
+        feedButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 feed();
             }
         });
-        playButton.addActionListener(e -> {
-            if (askArithmeticQuestion()) {
+
+        playButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 play();
             }
         });
-        sleepButton.addActionListener(e -> {
-            if (askArithmeticQuestion()) {
+
+        sleepButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 sleep();
             }
         });
 
-        // Add the components to the panel
-        panel.add(hungerLabel, BorderLayout.NORTH);
-        panel.add(happinessLabel, BorderLayout.CENTER);
-        panel.add(feedButton, BorderLayout.WEST);
-        panel.add(playButton, BorderLayout.CENTER);
-        panel.add(sleepButton, BorderLayout.EAST);
-        panel.add(spritePanel, BorderLayout.SOUTH); // Add the sprite panel to the bottom
 
-        // Set up the frame
+        // creation of the dark mode button and its function
+        JToggleButton darkModeSwitch = new JToggleButton("Dark Mode");
+        darkModeSwitch.setPreferredSize(new Dimension(80, 100));
+
+        darkModeSwitch.addActionListener(e -> {
+            if (darkModeSwitch.isSelected()) {
+                setDarkMode();
+            } else {
+                setDefaultMode();
+            }
+        });
+
+        JPanel darkModeButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        darkModeButtonPanel.add(darkModeSwitch);
+
+        panel.add(darkModeButtonPanel, BorderLayout.NORTH);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        panel.add(spritePanel, BorderLayout.CENTER);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(panel);
-        frame.setSize(800, 600); // Set the window size to 800x600
+        frame.setSize(800, 600);
         frame.setVisible(true);
 
-        displaySprite(); // Display the sprite image
-    }
+        displaySprite();
 
-    private boolean askArithmeticQuestion() {
-        Random random = new Random();
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(10);
-        int result;
-
-        // Generate a random addition or subtraction problem
-        if (random.nextBoolean()) {
-            result = num1 + num2;
-            return askQuestion("What is " + num1 + " + " + num2 + "?", result);
-        } else {
-            result = num1 - num2;
-            return askQuestion("What is " + num1 + " - " + num2 + "?", result);
-        }
-    }
-
-    private boolean askQuestion(String question, int correctAnswer) {
-        String userAnswer = JOptionPane.showInputDialog(question);
-        if (userAnswer == null) {
-            return false;  // User canceled the input dialog
-        }
-
-        try {
-            int answer = Integer.parseInt(userAnswer);
-            return answer == correctAnswer;
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number.");
-            return false;
-        }
+        // Start the timer for periodic updates
+        timer = new Timer(10000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePetStatus();
+            }
+        });
+        timer.start();
     }
 
     public void feed() {
         if (isAlive) {
-            hunger--;
-            happiness++;
+            if (hunger > 0) {
+                hunger--;
+            } else {
+                happiness--;
+                if (happiness < -3) {
+                    isAlive = false;
+                    JOptionPane.showMessageDialog(null, name + " has passed away. Game over💀.");
+                }
+            }
+            if (happiness < 4) {
+                happiness++;
+            }
             updateLabels();
             checkStatus();
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
 
     public void play() {
         if (isAlive) {
-            hunger++;
-            happiness++;
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness < 4) {
+                tiredness++;
+            }
+            if (happiness < 4) {
+                happiness++;
+            }
             updateLabels();
             checkStatus();
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
 
     public void sleep() {
         if (isAlive) {
-            hunger++;
-            happiness--;
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness > -4) {
+                tiredness--;
+            }
+            if (happiness > -4) {
+                happiness--;
+            }
             updateLabels();
             checkStatus();
         } else {
-            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
 
     private void checkStatus() {
-        if (hunger > 5 || happiness < -5) {
+        if (hunger > 4 || happiness < -3) {
             isAlive = false;
-            JOptionPane.showMessageDialog(null, name + " has passed away. Game over.");
+            JOptionPane.showMessageDialog(null, name + " has passed away. Game over💀.");
         }
     }
 
     private void updateLabels() {
-        hungerLabel.setText(name + "'s hunger: " + hunger);
-        happinessLabel.setText(name + "'s happiness: " + happiness);
+        hungerProgressBar.setString(name + "'s hunger: " + hunger);
+        happinessProgressBar.setString(name + "'s happiness: " + happiness);
+        tirednessProgressBar.setString(name + "'s tiredness: " + tiredness);
+        hungerProgressBar.setValue(hunger);
+        happinessProgressBar.setValue(happiness);
+        tirednessProgressBar.setValue(tiredness);
     }
 
     private void displaySprite() {
         try {
-            BufferedImage spriteImage = ImageIO.read(new File("img/icon3.png"));
+            BufferedImage spriteImage;
+            if (isDarkMode) {
+                spriteImage = ImageIO.read(getClass().getResource("img/afton.png"));
+            } else {
+                spriteImage = ImageIO.read(getClass().getResource("img/icon3.png"));
+            }
             spriteLabel = new JLabel(new ImageIcon(spriteImage));
-            spritePanel.removeAll(); // Clear the existing components in the sprite panel
-            spritePanel.add(spriteLabel); // Add the sprite label to the sprite panel
-            spritePanel.revalidate(); // Refresh the layout of the sprite panel
-            spritePanel.repaint(); // Repaint the sprite panel
+            spritePanel.removeAll();
+            spritePanel.add(spriteLabel);
+            spritePanel.revalidate();
+            spritePanel.repaint();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void setDarkMode() {
+        setComponentDarkMode(frame.getContentPane());
+        isDarkMode = true;
+        displaySprite();
+    }
+
+    private void setDefaultMode() {
+        setComponentDefaultMode(frame.getContentPane());
+        isDarkMode = false;
+        displaySprite();
+    }
+
+    private void setComponentDarkMode(Component component) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            container.setBackground(Color.BLACK);
+            container.setForeground(Color.WHITE);
+            for (Component child : container.getComponents()) {
+                setComponentDarkMode(child);
+            }
+        }
+    }
+
+    private void setComponentDefaultMode(Component component) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            container.setBackground(null);
+            container.setForeground(null);
+            for (Component child : container.getComponents()) {
+                setComponentDefaultMode(child);
+            }
+        }
+    }
+
+    private void updatePetStatus() {
+        if (isAlive) {
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness < 4) {
+                tiredness++;
+            }
+            if (happiness > -4) {
+                happiness--;
+            }
+            updateLabels();
+            checkStatus();
         }
     }
 
