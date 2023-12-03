@@ -112,6 +112,12 @@ public class Tamagotchi {
         if (isAlive) {
             if (hunger > 0) {
                 hunger--;
+            } else {
+                happiness--;
+                if (happiness < -3) {
+                    isAlive = false;
+                    JOptionPane.showMessageDialog(null, name + " has passed away. Game over💀.");
+                }
             }
             if (happiness < 4) {
                 happiness++;
@@ -122,7 +128,6 @@ public class Tamagotchi {
             JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
-
     public void play() {
         if (isAlive) {
             if (hunger < 4) {
