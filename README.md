@@ -5,8 +5,9 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 
 ## Roadmap
 
-- [ ] Add Darkmode (Joseph)
-- [ ] Make the UI Cleaner / Sleeker (Joseph)
+- [x] Add Darkmode (Joseph)
+- [x] Make the UI Cleaner / Sleeker (Joseph)
 - [x] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
-- [ ] Add Math Function (Emir)
+- [x] Add Math Function (Emir)
+- [ ] Add Incorrect / Error handling for math (Mason / Emir)
 - [ ] Add Lore (Nick)
