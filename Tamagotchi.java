@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
 
 public class Tamagotchi {
     private String name;
@@ -15,9 +14,10 @@ public class Tamagotchi {
     private boolean isAlive;
     private boolean isDarkMode;
 
-    private JLabel hungerLabel;
-    private JLabel happinessLabel;
-    private JLabel tirednessLabel;
+    private JProgressBar hungerProgressBar;
+    private JProgressBar happinessProgressBar;
+    private JProgressBar tirednessProgressBar;
+
     private JPanel spritePanel;
     private JLabel spriteLabel;
     private JPanel buttonPanel;
@@ -36,9 +36,27 @@ public class Tamagotchi {
 
         frame = new JFrame("Tamagotchi");
         JPanel panel = new JPanel(new BorderLayout());
-        hungerLabel = new JLabel(name + "'s hunger: " + hunger);
-        happinessLabel = new JLabel(name + "'s happiness: " + happiness);
-        tirednessLabel = new JLabel(name + "'s tiredness: " + tiredness);
+        hungerProgressBar = new JProgressBar(0, 4);
+        happinessProgressBar = new JProgressBar(0, 4);
+        tirednessProgressBar = new JProgressBar(-4, 4);
+
+        hungerProgressBar.setString(name + "'s hunger: " + hunger);
+        happinessProgressBar.setString(name + "'s happiness: " + happiness);
+        tirednessProgressBar.setString(name + "'s tiredness: " + tiredness);
+
+        // Add labels for the status bars
+        JLabel hungerLabel = new JLabel("Hunger:");
+        JLabel happinessLabel = new JLabel("Happiness:");
+        JLabel tirednessLabel = new JLabel("Tiredness:");
+
+        // Create a panel to hold the labels and progress bars
+        JPanel statusPanel = new JPanel(new GridLayout(3, 2));
+        statusPanel.add(hungerLabel);
+        statusPanel.add(hungerProgressBar);
+        statusPanel.add(happinessLabel);
+        statusPanel.add(happinessProgressBar);
+        statusPanel.add(tirednessLabel);
+        statusPanel.add(tirednessProgressBar);
 
         ImageIcon feedIcon = new ImageIcon("img/feed.png");
         ImageIcon playIcon = new ImageIcon("img/play.png");
@@ -61,9 +79,7 @@ public class Tamagotchi {
         buttonPanel.add(feedButton);
         buttonPanel.add(playButton);
         buttonPanel.add(sleepButton);
-        buttonPanel.add(hungerLabel);
-        buttonPanel.add(happinessLabel);
-        buttonPanel.add(tirednessLabel); // Add tiredness Label
+        buttonPanel.add(statusPanel); // Add the status panel to the button panel
 
         feedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -82,7 +98,9 @@ public class Tamagotchi {
                 sleep();
             }
         });
-// creation of the dark mode button and its function
+
+
+        // creation of the dark mode button and its function
         JToggleButton darkModeSwitch = new JToggleButton("Dark Mode");
         darkModeSwitch.setPreferredSize(new Dimension(80, 100));
 
@@ -183,9 +201,12 @@ public class Tamagotchi {
     }
 
     private void updateLabels() {
-        hungerLabel.setText(name + "'s hunger: " + hunger);
-        happinessLabel.setText(name + "'s happiness: " + happiness);
-        tirednessLabel.setText(name + "'s tiredness: " + tiredness);
+        hungerProgressBar.setString(name + "'s hunger: " + hunger);
+        happinessProgressBar.setString(name + "'s happiness: " + happiness);
+        tirednessProgressBar.setString(name + "'s tiredness: " + tiredness);
+        hungerProgressBar.setValue(hunger);
+        happinessProgressBar.setValue(happiness);
+        tirednessProgressBar.setValue(tiredness);
     }
 
     private void displaySprite() {
@@ -240,21 +261,21 @@ public class Tamagotchi {
         }
     }
 
-    private void updatePetStatus() {
-        if (isAlive) {
-            if (hunger < 4) {
-                hunger++;
-            }
-            if (tiredness < 4) {
-                tiredness++;
-            }
-            if (happiness > -4) {
-                happiness--;
-            }
-            updateLabels();
-            checkStatus();
+private void updatePetStatus() {
+    if (isAlive) {
+        if (hunger < 4) {
+            hunger++;
         }
+        if (tiredness < 4) {
+            tiredness++;
+        }
+        if (happiness > -4) {
+            happiness--;
+        }
+        updateLabels();
+        checkStatus();
     }
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
