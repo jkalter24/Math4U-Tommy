@@ -261,21 +261,21 @@ public class Tamagotchi {
         }
     }
 
-private void updatePetStatus() {
-    if (isAlive) {
-        if (hunger < 4) {
-            hunger++;
+    private void updatePetStatus() {
+        if (isAlive) {
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness < 4) {
+                tiredness++;
+            }
+            if (happiness > -4) {
+                happiness--;
+            }
+            updateLabels();
+            checkStatus();
         }
-        if (tiredness < 4) {
-            tiredness++;
-        }
-        if (happiness > -4) {
-            happiness--;
-        }
-        updateLabels();
-        checkStatus();
     }
-}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
