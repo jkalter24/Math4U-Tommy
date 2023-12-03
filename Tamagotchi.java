@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.Timer;
 
 public class Tamagotchi {
     private String name;
@@ -23,6 +23,7 @@ public class Tamagotchi {
     private JPanel buttonPanel;
 
     private JFrame frame;
+    private Timer timer;
 
     public Tamagotchi(String name) {
         this.name = name;
@@ -106,6 +107,14 @@ public class Tamagotchi {
         frame.setVisible(true);
 
         displaySprite();
+
+        // Start the timer for periodic updates
+        timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePetStatus();
+            }
+        });
+        timer.start();
     }
 
     public void feed() {
@@ -128,6 +137,7 @@ public class Tamagotchi {
             JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀.");
         }
     }
+
     public void play() {
         if (isAlive) {
             if (hunger < 4) {
@@ -181,9 +191,9 @@ public class Tamagotchi {
         try {
             BufferedImage spriteImage;
             if (isDarkMode) {
-                spriteImage = ImageIO.read(new File("img/afton.png"));
+                spriteImage = ImageIO.read(getClass().getResource("img/afton.png"));
             } else {
-                spriteImage = ImageIO.read(new File("img/icon3.png"));
+                spriteImage = ImageIO.read(getClass().getResource("img/icon3.png"));
             }
             spriteLabel = new JLabel(new ImageIcon(spriteImage));
             spritePanel.removeAll();
@@ -226,6 +236,22 @@ public class Tamagotchi {
             for (Component child : container.getComponents()) {
                 setComponentDefaultMode(child);
             }
+        }
+    }
+
+    private void updatePetStatus() {
+        if (isAlive) {
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness < 4) {
+                tiredness++;
+            }
+            if (happiness > -4) {
+                happiness--;
+            }
+            updateLabels();
+            checkStatus();
         }
     }
 
