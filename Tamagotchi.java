@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Tamagotchi {
     private String name;
@@ -110,8 +110,12 @@ public class Tamagotchi {
 
     public void feed() {
         if (isAlive) {
-            hunger--;
-            happiness++;
+            if (hunger > 0) {
+                hunger--;
+            }
+            if (happiness < 4) {
+                happiness++;
+            }
             updateLabels();
             checkStatus();
         } else {
@@ -121,9 +125,15 @@ public class Tamagotchi {
 
     public void play() {
         if (isAlive) {
-            hunger++;
-            tiredness++;
-            happiness++;
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness < 4) {
+                tiredness++;
+            }
+            if (happiness < 4) {
+                happiness++;
+            }
             updateLabels();
             checkStatus();
         } else {
@@ -133,9 +143,15 @@ public class Tamagotchi {
 
     public void sleep() {
         if (isAlive) {
-            hunger++;
-            tiredness--;
-            happiness--;
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness > -4) {
+                tiredness--;
+            }
+            if (happiness > -4) {
+                happiness--;
+            }
             updateLabels();
             checkStatus();
         } else {
@@ -144,7 +160,7 @@ public class Tamagotchi {
     }
 
     private void checkStatus() {
-        if (hunger > 5 || happiness < -5 || tiredness < -5) {
+        if (hunger > 4 || happiness < -3) {
             isAlive = false;
             JOptionPane.showMessageDialog(null, name + " has passed away. Game over💀.");
         }
