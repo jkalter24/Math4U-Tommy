@@ -1,109 +1,111 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.util.Random;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Tamagotchi {
     private String name;
     private int hunger;
     private int happiness;
+    private int tiredness;
     private boolean isAlive;
+    private boolean isDarkMode;
 
     private JLabel hungerLabel;
     private JLabel happinessLabel;
-    private JButton feedButton;
-    private JButton playButton;
-    private JButton sleepButton;
-    private JPanel spritePanel; // Panel to display the sprite image
-    private JLabel spriteLabel; // Label to hold the sprite image
+    private JLabel tirednessLabel;
+    private JPanel spritePanel;
+    private JLabel spriteLabel;
+    private JPanel buttonPanel;
+
+    private JFrame frame;
 
     public Tamagotchi(String name) {
         this.name = name;
         this.hunger = 0;
         this.happiness = 0;
+        this.tiredness = 0;
         this.isAlive = true;
+        this.isDarkMode = false;
 
-        // Create the GUI components
-        JFrame frame = new JFrame("Tamagotchi");
-        JPanel panel = new JPanel();
+        frame = new JFrame("Tamagotchi");
+        JPanel panel = new JPanel(new BorderLayout());
         hungerLabel = new JLabel(name + "'s hunger: " + hunger);
         happinessLabel = new JLabel(name + "'s happiness: " + happiness);
-        feedButton = new JButton("Feed");
-        playButton = new JButton("Play");
-        sleepButton = new JButton("Sleep");
-        spritePanel = new JPanel(); // Panel to display the sprite image
+        tirednessLabel = new JLabel(name + "'s tiredness: " + tiredness);
 
-        // Set the layout manager for the main panel
-        panel.setLayout(new BorderLayout());
+        ImageIcon feedIcon = new ImageIcon("img/feed.png");
+        ImageIcon playIcon = new ImageIcon("img/play.png");
+        ImageIcon sleepIcon = new ImageIcon("img/sleep.png");
 
-        // Add action listeners to the buttons
-        feedButton.addActionListener(e -> {
-            if (askArithmeticQuestion()) {
+        JButton feedButton = new JButton(feedIcon);
+        JButton playButton = new JButton(playIcon);
+        JButton sleepButton = new JButton(sleepIcon);
+
+        feedButton.setBorderPainted(false);
+        feedButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
+        playButton.setContentAreaFilled(false);
+        sleepButton.setBorderPainted(false);
+        sleepButton.setContentAreaFilled(false);
+
+        spritePanel = new JPanel();
+        buttonPanel = new JPanel();
+
+        buttonPanel.add(feedButton);
+        buttonPanel.add(playButton);
+        buttonPanel.add(sleepButton);
+        buttonPanel.add(hungerLabel);
+        buttonPanel.add(happinessLabel);
+        buttonPanel.add(tirednessLabel); // Add tiredness Label
+
+        feedButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 feed();
             }
         });
-        playButton.addActionListener(e -> {
-            if (askArithmeticQuestion()) {
+
+        playButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 play();
             }
         });
-        sleepButton.addActionListener(e -> {
-            if (askArithmeticQuestion()) {
+
+        sleepButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 sleep();
             }
         });
 
-        // Add the components to the panel
-        panel.add(hungerLabel, BorderLayout.NORTH);
-        panel.add(happinessLabel, BorderLayout.CENTER);
-        panel.add(feedButton, BorderLayout.WEST);
-        panel.add(playButton, BorderLayout.CENTER);
-        panel.add(sleepButton, BorderLayout.EAST);
-        panel.add(spritePanel, BorderLayout.SOUTH); // Add the sprite panel to the bottom
+        JToggleButton darkModeSwitch = new JToggleButton("Dark Mode");
+        darkModeSwitch.setPreferredSize(new Dimension(80, 100));
 
-        // Set up the frame
+        darkModeSwitch.addActionListener(e -> {
+            if (darkModeSwitch.isSelected()) {
+                setDarkMode();
+            } else {
+                setDefaultMode();
+            }
+        });
+
+        JPanel darkModeButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        darkModeButtonPanel.add(darkModeSwitch);
+
+        panel.add(darkModeButtonPanel, BorderLayout.NORTH);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        panel.add(spritePanel, BorderLayout.CENTER);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(panel);
-        frame.setSize(800, 600); // Set the window size to 800x600
+        frame.setSize(800, 600);
         frame.setVisible(true);
 
-        displaySprite(); // Display the sprite image
-    }
-
-    private boolean askArithmeticQuestion() {
-        Random random = new Random();
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(10);
-        int result;
-
-        // Generate a random addition or subtraction problem
-        if (random.nextBoolean()) {
-            result = num1 + num2;
-            return askQuestion("What is " + num1 + " + " + num2 + "?", result);
-        } else {
-            result = num1 - num2;
-            return askQuestion("What is " + num1 + " - " + num2 + "?", result);
-        }
-    }
-
-    private boolean askQuestion(String question, int correctAnswer) {
-        String userAnswer = JOptionPane.showInputDialog(question);
-        if (userAnswer == null) {
-            return false;  // User canceled the input dialog
-        }
-
-        try {
-            int answer = Integer.parseInt(userAnswer);
-            return answer == correctAnswer;
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number.");
-            return false;
-        }
+        displaySprite();
     }
 
     public void feed() {
@@ -120,6 +122,7 @@ public class Tamagotchi {
     public void play() {
         if (isAlive) {
             hunger++;
+            tiredness++;
             happiness++;
             updateLabels();
             checkStatus();
@@ -131,6 +134,7 @@ public class Tamagotchi {
     public void sleep() {
         if (isAlive) {
             hunger++;
+            tiredness--;
             happiness--;
             updateLabels();
             checkStatus();
@@ -140,7 +144,7 @@ public class Tamagotchi {
     }
 
     private void checkStatus() {
-        if (hunger > 5 || happiness < -5) {
+        if (hunger > 5 || happiness < -5 || tiredness < -5) {
             isAlive = false;
             JOptionPane.showMessageDialog(null, name + " has passed away. Game over.");
         }
@@ -149,18 +153,58 @@ public class Tamagotchi {
     private void updateLabels() {
         hungerLabel.setText(name + "'s hunger: " + hunger);
         happinessLabel.setText(name + "'s happiness: " + happiness);
+        tirednessLabel.setText(name + "'s tiredness: " + tiredness);
     }
 
     private void displaySprite() {
         try {
-            BufferedImage spriteImage = ImageIO.read(new File("img/icon3.png"));
+            BufferedImage spriteImage;
+            if (isDarkMode) {
+                spriteImage = ImageIO.read(new File("img/afton.png"));
+            } else {
+                spriteImage = ImageIO.read(new File("img/icon3.png"));
+            }
             spriteLabel = new JLabel(new ImageIcon(spriteImage));
-            spritePanel.removeAll(); // Clear the existing components in the sprite panel
-            spritePanel.add(spriteLabel); // Add the sprite label to the sprite panel
-            spritePanel.revalidate(); // Refresh the layout of the sprite panel
-            spritePanel.repaint(); // Repaint the sprite panel
+            spritePanel.removeAll();
+            spritePanel.add(spriteLabel);
+            spritePanel.revalidate();
+            spritePanel.repaint();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void setDarkMode() {
+        setComponentDarkMode(frame.getContentPane());
+        isDarkMode = true;
+        displaySprite();
+    }
+
+    private void setDefaultMode() {
+        setComponentDefaultMode(frame.getContentPane());
+        isDarkMode = false;
+        displaySprite();
+    }
+
+    private void setComponentDarkMode(Component component) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            container.setBackground(Color.BLACK);
+            container.setForeground(Color.WHITE);
+            for (Component child : container.getComponents()) {
+                setComponentDarkMode(child);
+            }
+        }
+    }
+
+    private void setComponentDefaultMode(Component component) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            container.setBackground(null);
+            container.setForeground(null);
+            for (Component child : container.getComponents()) {
+                setComponentDefaultMode(child);
+            }
         }
     }
 
