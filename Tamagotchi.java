@@ -181,11 +181,7 @@ public class Tamagotchi {
 
     private void handleIncorrectAnswer() {
         JOptionPane.showMessageDialog(null, "Oops! That's incorrect. Your Tamagotchi is not happy.");
-        // Adjust Tamagotchi stats for incorrect answer
-        if (isAlive) {
-            happiness--;
-            checkStatus();
-        }
+        // Adjust Tamagotchi stats for incorrect answer (Maybe. Perhaps NOT. 
     }
 
     public void feed() {
