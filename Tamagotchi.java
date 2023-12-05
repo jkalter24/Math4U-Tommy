@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.util.Random;
 
 public class Tamagotchi {
     private String name;
@@ -83,19 +84,25 @@ public class Tamagotchi {
 
         feedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                feed();
+                if (askArithmeticQuestion()) {
+                    feed();
+                }
             }
         });
 
         playButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                play();
+                if (askArithmeticQuestion()) {
+                    play();
+                }
             }
         });
 
         sleepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                sleep();
+                if (askArithmeticQuestion()) {
+                    sleep();
+                }
             }
         });
 
@@ -134,6 +141,51 @@ public class Tamagotchi {
             }
         });
         timer.start();
+    }
+
+    private boolean askArithmeticQuestion() {
+        Random random = new Random();
+        int num1 = random.nextInt(10);
+        int num2 = random.nextInt(10);
+        int result;
+
+        // Generate a random addition or subtraction problem
+        if (random.nextBoolean()) {
+            result = num1 + num2;
+            return askQuestion("What is " + num1 + " + " + num2 + "?", result);
+        } else {
+            result = num1 - num2;
+            return askQuestion("What is " + num1 + " - " + num2 + "?", result);
+        }
+    }
+
+    private boolean askQuestion(String question, int correctAnswer) {
+        String userAnswer = JOptionPane.showInputDialog(question);
+        if (userAnswer == null) {
+            return false;  // User canceled the input dialog
+        }
+
+        try {
+            int answer = Integer.parseInt(userAnswer);
+            if (answer == correctAnswer) {
+                return true;  // Correct answer
+            } else {
+                handleIncorrectAnswer();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number.");
+            return false;
+        }
+    }
+
+    private void handleIncorrectAnswer() {
+        JOptionPane.showMessageDialog(null, "Oops! That's incorrect. Your Tamagotchi is not happy.");
+        // Adjust Tamagotchi stats for incorrect answer
+        if (isAlive) {
+            happiness--;
+            checkStatus();
+        }
     }
 
     public void feed() {
