@@ -9,12 +9,12 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 - [X] Add Darkmode (Joseph)
 - [X] Make the UI Cleaner / Sleeker (Joseph)
 - [x] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
-### Backend - Mason, Emir, Nick, Joseph
+## Backend - Mason, Emir, Nick, Joseph
 - [X] Add Math Function (Emir)
 - [X] Math And General Error Handling (Mason)
 - [ ] Add Lore (Nick)
-- [X] Add Background Music
+- [X] Add Background Music (Joseph)
 =======
 ## To-Do
-- [ ] Fix it so if you get a math question correct it takes a point of happinies away.
+- [ ] Fix it so if you correct a math question, it takes a point of happiness away.
 - [ ] Do the same if you get it correct.
