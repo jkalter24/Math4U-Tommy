@@ -7,7 +7,11 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.Random;
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 public class Tamagotchi {
     private String name;
     private int hunger;
@@ -22,6 +26,18 @@ public class Tamagotchi {
     private JPanel spritePanel; // Panel to display the sprite image
     private JLabel spriteLabel; // Label to hold the sprite image
 
+<<<<<<< Updated upstream
+=======
+    private JPanel spritePanel;
+    private JLabel spriteLabel;
+    private JPanel buttonPanel;
+
+    private JFrame frame;
+    private Timer timer;
+    private Clip backgroundMusic;
+
+    // intro the Tamogotchi Class and sets stats to 0 by default
+>>>>>>> Stashed changes
     public Tamagotchi(String name) {
         this.name = name;
         this.hunger = 0;
@@ -72,7 +88,22 @@ public class Tamagotchi {
         frame.setSize(800, 600); // Set the window size to 800x600
         frame.setVisible(true);
 
+<<<<<<< Updated upstream
         displaySprite(); // Display the sprite image
+=======
+        displaySprite();
+
+        // Start playing the background music
+        playBackgroundMusic();
+
+        // Start the timer for periodic updates
+        timer = new Timer(30000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePetStatus();
+            }
+        });
+        timer.start();
+>>>>>>> Stashed changes
     }
 
     private boolean askArithmeticQuestion() {
@@ -106,6 +137,18 @@ public class Tamagotchi {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    private void handleIncorrectAnswer() {
+        JOptionPane.showMessageDialog(null, "Oops! That's incorrect. Your Tamagotchi is not happy.");
+        // Adjust Tamagotchi stats for incorrect answer
+        if (isAlive) {
+            happiness--;
+            checkStatus();
+        }
+    }
+
+>>>>>>> Stashed changes
     public void feed() {
         if (isAlive) {
             hunger--;
@@ -135,7 +178,11 @@ public class Tamagotchi {
             updateLabels();
             checkStatus();
         } else {
+<<<<<<< Updated upstream
             JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
+=======
+            JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀."); // If none of these check out then your pet is dead and will show this message.
+>>>>>>> Stashed changes
         }
     }
 
@@ -147,10 +194,23 @@ public class Tamagotchi {
     }
 
     private void updateLabels() {
+<<<<<<< Updated upstream
         hungerLabel.setText(name + "'s hunger: " + hunger);
         happinessLabel.setText(name + "'s happiness: " + happiness);
+=======
+        hungerProgressBar.setString(name + "'s hunger: " + hunger);
+        happinessProgressBar.setString(name + "'s happiness: " + happiness);
+        tirednessProgressBar.setString(name + "'s tiredness: " + tiredness);
+        hungerProgressBar.setValue(hunger);
+        happinessProgressBar.setValue(happiness);
+        tirednessProgressBar.setValue(tiredness);
+        
+        // Force a screen update
+        frame.revalidate();
+        frame.repaint();
+>>>>>>> Stashed changes
     }
-
+    
     private void displaySprite() {
         try {
             BufferedImage spriteImage = ImageIO.read(new File("img/icon3.png"));
@@ -164,6 +224,75 @@ public class Tamagotchi {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    private void setDarkMode() {
+        setComponentDarkMode(frame.getContentPane());
+        isDarkMode = true;
+        displaySprite();
+    }
+
+    private void setDefaultMode() {
+        setComponentDefaultMode(frame.getContentPane());
+        isDarkMode = false;
+        displaySprite();
+    }
+
+    private void setComponentDarkMode(Component component) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            container.setBackground(Color.BLACK);
+            container.setForeground(Color.WHITE);
+            for (Component child : container.getComponents()) {
+                setComponentDarkMode(child);
+            }
+        }
+    }
+
+    private void setComponentDefaultMode(Component component) {
+        if (component instanceof Container) {
+            Container container = (Container) component;
+            container.setBackground(null);
+            container.setForeground(null);
+            for (Component child : container.getComponents()) {
+                setComponentDefaultMode(child);
+            }
+        }
+    }
+
+    private void updatePetStatus() {
+        if (isAlive) {
+            if (hunger < 4) {
+                hunger++;
+            }
+            if (tiredness < 4) {
+                tiredness++;
+            }
+            if (happiness > -4) {
+                happiness--;
+            }
+            updateLabels();
+            checkStatus();
+        }
+    }
+
+    private void playBackgroundMusic() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/Last-Breath.wav"));
+            backgroundMusic = AudioSystem.getClip();
+            backgroundMusic.open(audioInputStream);
+            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+>>>>>>> Stashed changes
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             String name = JOptionPane.showInputDialog("Enter your Tamagotchi's name:");

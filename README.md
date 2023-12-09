@@ -5,8 +5,14 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 
 ## Roadmap
 
+<<<<<<< Updated upstream
 - [ ] Add Darkmode (Joseph)
 - [ ] Make the UI Cleaner / Sleeker (Joseph)
 - [x] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
 - [ ] Add Math Function (Emir)
 - [ ] Add Lore (Nick)
+=======
+## To-Do
+- [ ] Fix it so if you get a math question correct it takes a point of happinies away.
+- [ ] Do the same if you get it correct.
+>>>>>>> Stashed changes
