@@ -9,10 +9,9 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 - [X] Add Darkmode (Joseph)
 - [X] Make the UI Cleaner / Sleeker (Joseph)
 - [x] Fix The Logo Height and Width; ALSO CHANGE TO JUST CHARACTER (Joseph) 
-## Backend - Mason, Emir, Nick, Joseph
+### Backend - Mason, Emir, Nick, Joseph
 - [X] Add Math Function (Emir)
 - [X] Math And General Error Handling (Mason)
 - [ ] Add Lore (Nick)
 - [X] Add Background Music (Joseph)
-=======
 - [X] QA Check (Kishan)
