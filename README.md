@@ -15,6 +15,4 @@ Hello Everyone, Happy Thanksgiving I am very proud to announce that this is our 
 - [ ] Add Lore (Nick)
 - [X] Add Background Music (Joseph)
 =======
-## To-Do
-- [ ] Fix it so if you correct a math question, it takes a point of happiness away.
-- [ ] Do the same if you get it correct.
+- [X] QA Check (Kishan)
