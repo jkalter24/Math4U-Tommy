@@ -26,8 +26,6 @@ public class Tamagotchi {
     private JPanel spritePanel; // Panel to display the sprite image
     private JLabel spriteLabel; // Label to hold the sprite image
 
-<<<<<<< Updated upstream
-=======
     private JPanel spritePanel;
     private JLabel spriteLabel;
     private JPanel buttonPanel;
@@ -37,7 +35,6 @@ public class Tamagotchi {
     private Clip backgroundMusic;
 
     // intro the Tamogotchi Class and sets stats to 0 by default
->>>>>>> Stashed changes
     public Tamagotchi(String name) {
         this.name = name;
         this.hunger = 0;
@@ -88,9 +85,7 @@ public class Tamagotchi {
         frame.setSize(800, 600); // Set the window size to 800x600
         frame.setVisible(true);
 
-<<<<<<< Updated upstream
         displaySprite(); // Display the sprite image
-=======
         displaySprite();
 
         // Start playing the background music
@@ -103,7 +98,6 @@ public class Tamagotchi {
             }
         });
         timer.start();
->>>>>>> Stashed changes
     }
 
     private boolean askArithmeticQuestion() {
@@ -137,8 +131,6 @@ public class Tamagotchi {
         }
     }
 
-<<<<<<< Updated upstream
-=======
     private void handleIncorrectAnswer() {
         JOptionPane.showMessageDialog(null, "Oops! That's incorrect. Your Tamagotchi is not happy.");
         // Adjust Tamagotchi stats for incorrect answer
@@ -148,7 +140,6 @@ public class Tamagotchi {
         }
     }
 
->>>>>>> Stashed changes
     public void feed() {
         if (isAlive) {
             hunger--;
@@ -178,11 +169,8 @@ public class Tamagotchi {
             updateLabels();
             checkStatus();
         } else {
-<<<<<<< Updated upstream
             JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive.");
-=======
             JOptionPane.showMessageDialog(null, "Sorry, " + name + " is no longer alive💀."); // If none of these check out then your pet is dead and will show this message.
->>>>>>> Stashed changes
         }
     }
 
@@ -194,10 +182,8 @@ public class Tamagotchi {
     }
 
     private void updateLabels() {
-<<<<<<< Updated upstream
         hungerLabel.setText(name + "'s hunger: " + hunger);
         happinessLabel.setText(name + "'s happiness: " + happiness);
-=======
         hungerProgressBar.setString(name + "'s hunger: " + hunger);
         happinessProgressBar.setString(name + "'s happiness: " + happiness);
         tirednessProgressBar.setString(name + "'s tiredness: " + tiredness);
@@ -208,7 +194,6 @@ public class Tamagotchi {
         // Force a screen update
         frame.revalidate();
         frame.repaint();
->>>>>>> Stashed changes
     }
     
     private void displaySprite() {
@@ -224,8 +209,6 @@ public class Tamagotchi {
         }
     }
 
-<<<<<<< Updated upstream
-=======
     private void setDarkMode() {
         setComponentDarkMode(frame.getContentPane());
         isDarkMode = true;
@@ -291,8 +274,6 @@ public class Tamagotchi {
         }
     }
 
-
->>>>>>> Stashed changes
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             String name = JOptionPane.showInputDialog("Enter your Tamagotchi's name:");
